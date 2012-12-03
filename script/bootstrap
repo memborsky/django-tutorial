@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# bootstrap the setup for the django application.
+
+# Install the django environment
+do_setup()
+{
+    if [ $1 ];
+    then
+        echo "virtualenv venv --distribute";
+    fi
+
+    # Install all of our requirements from pip.
+    echo "pip install -r requirements.txt";
+
+    # We also need to make sure we install the MySQL-python library.
+    echo "easy_install MySQL-python";
+
+    exit 0;
+}
+
+# If virtualenv is not installed
+# Suggest to the user to install it
+# Prompt user to continue without it
+if test ! $(which virtualenv);
+then
+    echo "It is suggested that you run virtualenv for this installation to not destroy your system environment setup. \n";
+
+    while true;
+    do
+        read -e -p "Do you wish to continue anyways? (y/n) [default: n] " yn;
+
+        if [ -z $yn ];
+        then
+            yn="n"
+        fi
+
+        case $yn in
+            [Yy]* ) do_setup false; break;;
+            [Nn]* ) exit 1;;
+            * ) echo "Please answer y or n.";;
+        esac
+    done
+
+else
+    do_setup true;
+fi
