@@ -12,6 +12,9 @@ from django.shortcuts import render_to_response, get_object_or_404
 # Raw HTTP response.
 from django.http import HttpResponse
 
+# Add Cross Site Request Forgery proection
+from django.template import RequestContext
+
 # The /polls/ view.
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -22,7 +25,8 @@ def detail(request, poll_id):
     # Raise Http404 if poll_id doesn't exist.
     p = get_object_or_404(Poll, pk = poll_id)
 
-    return render_to_response('polls/detail.html', {'poll': p})
+    return render_to_response('polls/detail.html', {'poll': p},
+        context_instance=RequestContext(request))
 
 # The /polls/<id>/results/ view.
 def results(request, poll_id):
