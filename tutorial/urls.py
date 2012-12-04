@@ -4,21 +4,10 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('polls.views',
-    # Poll index
-    url(r'^polls/$', 'index'),
+urlpatterns = patterns('',
+    # Route our /polls/ sub-directory to polls/urls.py
+    url(r'^polls/', include('polls.urls')),
 
-    # Detailed poll view
-    url(r'^polls/(?P<poll_id>\d+)/$', 'detail'),
-
-    # The results of the poll
-    url(r'^polls/(?P<poll_id>\d+)/results/$', 'results'),
-
-    # Vote on the poll
-    url(r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'),
-)
-
-urlpatterns += patterns('',
     # Examples:
     # url(r'^$', 'tutorial.views.home', name='home'),
     # url(r'^tutorial/', include('tutorial.foo.urls')),
