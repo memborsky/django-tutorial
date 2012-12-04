@@ -18,29 +18,7 @@ from django.template import RequestContext
 # This allows us to not have to reconstruct each url in code but just replace args in the url given.
 from django.core.urlresolvers import reverse
 
-
-# The /polls/ view.
-def index(request):
-    latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
-    return render_to_response('polls/index.html', {'latest_poll_list': latest_poll_list})
-
-
-# The /polls/<id>/ view.
-def detail(request, poll_id):
-    # Raise Http404 if poll_id doesn't exist.
-    p = get_object_or_404(Poll, pk = poll_id)
-
-    return render_to_response('polls/detail.html', {'poll': p},
-        context_instance=RequestContext(request))
-
-
-# The /polls/<id>/results/ view.
-def results(request, poll_id):
-    p = get_object_or_404(Poll, pk = poll_id)
-    return render_to_response('polls/results.html', {'poll': p})
-
-
-# The /polls/<id>/vote/ view.
+# Handle the POST request for submitting a users vote.
 def vote(request, poll_id):
     p = get_object_or_404(Poll, pk = poll_id)
 
@@ -62,4 +40,4 @@ def vote(request, poll_id):
         # Always reutnr an HttpResponseRedirect after successfully dealing with
         # POST data. This prevents data from being posted twice if a user hits
         # the Back button.
-        return HttpResponseRedirect(reverse('polls.views.results', args = (p.id, )))
+        return HttpResponseRedirect(reverse('poll_results', args = (p.id, )))
