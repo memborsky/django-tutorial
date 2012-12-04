@@ -1,12 +1,13 @@
 # Our database model to the polls so we can render some dynamic content.
 from polls.models import Poll
 
-# This allows us to skip having to import context and template here so we can
-# make our code a little cleaner.
-from django.shortcuts import render_to_response
-
-# Allow us to spit out 404 errors.
-from django.http import Http404
+# Django shortcuts
+#
+# render_to_response = Renders a given template with a given context dictionary and
+#   renders an HttpResponse object with that rendered text.
+#
+# get_object_or_404 = Render a 404 error page if object doesn't exist.
+from django.shortcuts import render_to_response, get_object_or_404
 
 # Raw HTTP response.
 from django.http import HttpResponse
@@ -18,11 +19,8 @@ def index(request):
 
 # The /polls/<id>/ view.
 def detail(request, poll_id):
-    try:
-        p = Poll.objects.get(pk = poll_id)
-
-    except Poll.DoesNotExist:
-        raise Http404
+    # Raise Http404 if poll_id doesn't exist.
+    p = get_object_or_404(Poll, pk = poll_id)
 
     return render_to_response('polls/detail.html', {'poll': p})
 
