@@ -10,7 +10,7 @@ from polls.models import Poll, Choice
 from django.shortcuts import render_to_response, get_object_or_404
 
 # Allow us to send HTTP response and HTTP redirects.
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
 # Add Cross Site Request Forgery proection
 from django.template import RequestContext
@@ -18,10 +18,12 @@ from django.template import RequestContext
 # This allows us to not have to reconstruct each url in code but just replace args in the url given.
 from django.core.urlresolvers import reverse
 
+
 # The /polls/ view.
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
     return render_to_response('polls/index.html', {'latest_poll_list': latest_poll_list})
+
 
 # The /polls/<id>/ view.
 def detail(request, poll_id):
@@ -31,9 +33,12 @@ def detail(request, poll_id):
     return render_to_response('polls/detail.html', {'poll': p},
         context_instance=RequestContext(request))
 
+
 # The /polls/<id>/results/ view.
 def results(request, poll_id):
-    return HttpResponse("You're looking at the results of poll %s." % poll_id)
+    p = get_object_or_404(Poll, pk = poll_id)
+    return render_to_response('polls/results.html', {'poll': p})
+
 
 # The /polls/<id>/vote/ view.
 def vote(request, poll_id):
