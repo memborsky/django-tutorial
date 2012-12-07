@@ -7,14 +7,11 @@ do_setup()
 {
     if [ $1 ];
     then
-        echo "virtualenv venv --distribute";
+        virtualenv venv --distribute;
     fi
 
     # Install all of our requirements from pip.
-    echo "pip install -r requirements.txt";
-
-    # We also need to make sure we install the MySQL-python library.
-    echo "easy_install MySQL-python";
+    pip install -r requirements.txt;
 
     exit 0;
 }
@@ -38,7 +35,7 @@ then
         case $yn in
             [Yy]* ) do_setup false; break;;
             [Nn]* ) exit 1;;
-            * ) echo "Please answer y or n.";;
+            * ) Please answer y or n.;;
         esac
     done
 
