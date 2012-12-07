@@ -8,6 +8,13 @@ do_setup()
     if [ $1 ];
     then
         virtualenv venv --distribute;
+        
+        # Add the venv folder to ignores for
+        if [ -d ./.git/ ]; then
+            if [ `grep -Fxq "venv" ./.gitignore` ]; then
+                echo "venv" >> .gitignore
+            fi
+        fi
     fi
 
     # Install all of our requirements from pip.
